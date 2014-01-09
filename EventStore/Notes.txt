@@ -1,0 +1,13 @@
+﻿Features
+-Events should define their own caching duration (as MaxAge)
+-A cache mechanism that automatically caches events (when queried or raised) for the described duration.
+	When a new grouped event comes in, it updates the grouped cache. There should be a maximum memory size
+	defined for the cache. Locking should be user based whenever possible.
+-Define relations between events to automatically invalidate caches.
+-Clear caches
+-Restore domain objects by applying events rather than using constructor (constructor might still apply for)
+	initial/static state.
+-It should be possible to restore models from the latest event when cumulative state is stored in event.
+-Expore difference in caching events vs caching domain models.
+-Explore where search type queries fits in (including various BI queries against the events).
+-Should have a RavenDB backing store.
