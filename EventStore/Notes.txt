@@ -11,3 +11,5 @@
 -Expore difference in caching events vs caching domain models.
 -Explore where search type queries fits in (including various BI queries against the events).
 -Should have a RavenDB backing store.
+-Add automatic performance logging of model instantiations to catch problems.
+-High level testing that one or more events trigger other events.
