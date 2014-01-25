@@ -10,6 +10,13 @@ namespace Demo.Models
 {
     public class StockExchange
     {
+        public string Name { get; private set; }
+
+        public StockExchange(string name)
+        {
+            Name = name;
+        }
+
         public Quote GetQuote(StockSymbol symbol)
         {
             var rand = new Random();
@@ -26,6 +33,12 @@ namespace Demo.Models
             var cost = order.Shares * order.Quote.Cost.Amount;
 
             Store.Current.Save(new OrderPlacedEvent(order.Broker.Name, order.Symbol.Symbol, order.Shares, cost, order.Quote.Cost.Currency.Name));
+        }
+
+        public Broker RegisterBroker(string name)
+        {
+            Store.Current.Save(new BrokerRegisteredEvent(name, Name));
+            return new Broker(name);
         }
     }
 }

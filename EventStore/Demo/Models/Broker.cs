@@ -14,18 +14,26 @@ namespace Demo.Models
         public Money Funds { get; private set; }
         public Portfolio Portfolio { get; private set; }
 
-        public Broker(string name, Money funds, Portfolio portfolio)
+        public Broker(string name)
         {
             Name = name;
-            Funds = funds;
-            Portfolio = portfolio;
+            Funds = new Money(0, new Currency("USD"));
+            Portfolio = new Portfolio(new Dictionary<StockSymbol, int>());
         }
 
         public void AddFunds(Money funds)
         {
-            Funds = Funds.Add(funds);
+            var evt = new FundsAddedEvent(Name, funds.Currency.Name, funds.Amount);
+            Apply(evt);
+            Store.Current.Save(evt);
+        }
 
-            Store.Current.Save(new FundsAddedEvent(Name, funds.Currency.Name, funds.Amount));
+        public void Apply(FundsAddedEvent evt)
+        {
+            var currency = new Currency(evt.CurrencyName);
+            var money = new Money(evt.Amount, currency);
+
+            Funds = Funds.Add(money);
         }
     }
 }

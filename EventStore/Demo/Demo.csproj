@@ -43,8 +43,11 @@
   <ItemGroup>
     <Compile Include="Commands\AddFundsCommand.cs" />
     <Compile Include="Commands\PlaceOrderCommand.cs" />
+    <Compile Include="Commands\RegisterBrokerCommand.cs" />
+    <Compile Include="DomainEvents\BrokerRegisteredEvent.cs" />
     <Compile Include="DomainEvents\FundsAddedEvent.cs" />
     <Compile Include="DomainEvents\OrderPlacedEvent.cs" />
+    <Compile Include="DomainServices\RegisterBrokerService.cs" />
     <Compile Include="Models\Broker.cs" />
     <Compile Include="Models\Currency.cs" />
     <Compile Include="Models\Money.cs" />
@@ -56,6 +59,8 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Queries\GetQuoteQuery.cs" />
+    <Compile Include="Repositories\BrokerRepository.cs" />
+    <Compile Include="Repositories\StockExchangeRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
