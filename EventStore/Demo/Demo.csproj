@@ -44,10 +44,13 @@
     <Compile Include="Commands\AddFundsCommand.cs" />
     <Compile Include="Commands\PlaceOrderCommand.cs" />
     <Compile Include="Commands\RegisterBrokerCommand.cs" />
+    <Compile Include="Commands\UpdateStockPriceCommand.cs" />
     <Compile Include="DomainEvents\BrokerRegisteredEvent.cs" />
     <Compile Include="DomainEvents\FundsAddedEvent.cs" />
     <Compile Include="DomainEvents\OrderPlacedEvent.cs" />
+    <Compile Include="DomainEvents\StockPriceUpdatedEvent.cs" />
     <Compile Include="DomainServices\RegisterBrokerService.cs" />
+    <Compile Include="DomainServices\UpdateStockPriceService.cs" />
     <Compile Include="Models\Broker.cs" />
     <Compile Include="Models\Currency.cs" />
     <Compile Include="Models\Money.cs" />

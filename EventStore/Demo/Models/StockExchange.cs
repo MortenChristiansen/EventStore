@@ -10,6 +10,8 @@ namespace Demo.Models
 {
     public class StockExchange
     {
+        private Dictionary<StockSymbol, Money> _stockPrices = new Dictionary<StockSymbol, Money>();
+
         public string Name { get; private set; }
 
         public StockExchange(string name)
@@ -19,10 +21,10 @@ namespace Demo.Models
 
         public Quote GetQuote(StockSymbol symbol)
         {
-            var rand = new Random();
-            var dollars = 1 + rand.Next(1000);
+            if (!_stockPrices.ContainsKey(symbol))
+                return null;
 
-            var price = new Money(dollars, new Currency("USD"));
+            var price = _stockPrices[symbol];
 
             var quote = new Quote(symbol, price);
             return quote;
@@ -39,6 +41,34 @@ namespace Demo.Models
         {
             Store.Current.Save(new BrokerRegisteredEvent(name, Name));
             return new Broker(name);
+        }
+
+        public void UpdatePrice(StockSymbol stockSymbol, Money price)
+        {
+            var priceDelta = 0m;
+            if (_stockPrices.ContainsKey(stockSymbol))
+            {
+                priceDelta = price.Amount - _stockPrices[stockSymbol].Amount;
+            }
+
+            var evt = new StockPriceUpdatedEvent(stockSymbol.Symbol, Name, price.Amount, priceDelta, price.Currency.Name);
+            Apply(evt);
+            Store.Current.Save(evt);
+        }
+
+        public void Apply(StockPriceUpdatedEvent evt)
+        {
+            var symbol = new StockSymbol(evt.StockName);
+            var price = new Money(evt.NewPrice, new Currency(evt.CurrencySymbol));
+
+            if (_stockPrices.ContainsKey(symbol))
+            {
+                _stockPrices[symbol] = price;
+            }
+            else
+            {
+                _stockPrices.Add(symbol, price);
+            }
         }
     }
 }

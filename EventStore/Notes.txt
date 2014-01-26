@@ -3,7 +3,8 @@
 -A cache mechanism that automatically caches events (when queried or raised) for the described duration.
 	When a new grouped event comes in, it updates the grouped cache. There should be a maximum memory size
 	defined for the cache. Locking should be user based whenever possible.
--Define relations between events to automatically invalidate caches.
+-Define relations between events to automatically invalidate caches. While it is obvious how to do this at a type level, is there a good way to do
+	it at the level of specific aggregates?
 -Clear caches
 -Restore domain objects by applying events rather than using constructor (constructor might still apply for)
 	initial/static state.
@@ -13,3 +14,20 @@
 -Should have a RavenDB backing store.
 -Add automatic performance logging of model instantiations to catch problems.
 -High level testing that one or more events trigger other events.
+
+Demo
+-The demo could be designed to take input from the user for buying and selling stocks. The user has a persistent broker profile that he can use. He then
+	has some commands available:
+	-List stock exchange symbols
+	-Get quote
+	-Place order
+	-Deposit funds
+	-Sell stocks
+	-List portfolio
+	-Follow symbol
+	-Unfollow symbol
+-The demo could/should use actual stock prices. So the system would run a query every minute or so, updating the stock prices. If you get a quote, you get
+	the up-to-date price. http://vikku.info/codetrash/Yahoo_Finance_Stock_Quote_API
+
+Thoughts
+-Model constructors define the default/initial state.

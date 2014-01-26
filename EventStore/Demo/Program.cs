@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Demo
@@ -14,11 +15,22 @@ namespace Demo
         {
             var exchange = "New York Stock Exchange";
 
-            var handler = new RegisterBrokerService();
-            handler.Handle(new RegisterBrokerCommand("John Parker", exchange));
-            handler.Handle(new RegisterBrokerCommand("Tina Reeds", exchange));
+            var registerBrokerService = new RegisterBrokerService();
+            registerBrokerService.Handle(new RegisterBrokerCommand("John Parker", exchange));
+            registerBrokerService.Handle(new RegisterBrokerCommand("Tina Reeds", exchange));
 
-            Console.ReadLine();
+            var rand = new Random();
+            var price = 150d;
+            var updateStockPriceService = new UpdateStockPriceService();
+
+            while(true)
+            {
+                Thread.Sleep(1000);
+                var n = (rand.NextDouble() / 10) - 0.05;
+                price += n * price;
+
+                updateStockPriceService.Handle(new UpdateStockPriceCommand("MSN", exchange, (decimal)price, "USD"));
+            }
         }
     }
 }
