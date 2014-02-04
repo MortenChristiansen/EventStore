@@ -34,12 +34,12 @@ namespace Demo.Models
         {
             var cost = order.Shares * order.Quote.Cost.Amount;
 
-            Store.Current.Save(new OrderPlacedEvent(order.Broker.Name, order.Symbol.Symbol, order.Shares, cost, order.Quote.Cost.Currency.Name));
+            Store.Current.Publish(new OrderPlacedEvent(order.Broker.Name, order.Symbol.Symbol, order.Shares, cost, order.Quote.Cost.Currency.Name));
         }
 
         public Broker RegisterBroker(string name)
         {
-            Store.Current.Save(new BrokerRegisteredEvent(name, Name));
+            Store.Current.Publish(new BrokerRegisteredEvent(name, Name));
             return new Broker(name);
         }
 
@@ -53,7 +53,7 @@ namespace Demo.Models
 
             var evt = new StockPriceUpdatedEvent(stockSymbol.Symbol, Name, price.Amount, priceDelta, price.Currency.Name);
             Apply(evt);
-            Store.Current.Save(evt);
+            Store.Current.Publish(evt);
         }
 
         public void Apply(StockPriceUpdatedEvent evt)

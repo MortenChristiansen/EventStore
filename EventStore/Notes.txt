@@ -1,19 +1,21 @@
 ﻿Features
--Events should define their own caching duration (as MaxAge)
 -A cache mechanism that automatically caches events (when queried or raised) for the described duration.
 	When a new grouped event comes in, it updates the grouped cache. There should be a maximum memory size
 	defined for the cache. Locking should be user based whenever possible.
 -Define relations between events to automatically invalidate caches. While it is obvious how to do this at a type level, is there a good way to do
 	it at the level of specific aggregates?
 -Clear caches
+	Attribute: [CacheInvalidatedBy(typeof(StockPriceChangedEvent), AggregateId.Same)] // Can it rely on the other event having the same aggregate id?
 -Restore domain objects by applying events rather than using constructor (constructor might still apply for)
 	initial/static state.
 -It should be possible to restore models from the latest event when cumulative state is stored in event.
+-Could we automatically create accumulated models for every X events, so you would at most load X events to restore an aggregate?
 -Expore difference in caching events vs caching domain models.
--Explore where search type queries fits in (including various BI queries against the events).
--Should have a RavenDB backing store.
+-Explore where search type queries fits in (including various BI queries against the events). They could be seen as special commands generating a result.
+	Should there be a difference between search type queries and direct queries such as "Get the name of Broker X"?
 -Add automatic performance logging of model instantiations to catch problems.
 -High level testing that one or more events trigger other events.
+-Could we use IObservables to manage event subscriptions (and would that work together with a message bus)?
 
 Demo
 -The demo could be designed to take input from the user for buying and selling stocks. The user has a persistent broker profile that he can use. He then
@@ -31,3 +33,6 @@ Demo
 
 Thoughts
 -Model constructors define the default/initial state.
+-A note on how repositories populates models. If a model is the aggregate root for the repo and it is queried for, it should be populated with the full hierarchy of models.
+	However, if you query for related data, you would only get value objects. For example, you can query the StockExchangeRepository for brokers registered to a given exchange,
+	but you will only get their names (their aggregate IDs).

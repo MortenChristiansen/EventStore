@@ -25,7 +25,7 @@ namespace Demo.Models
         {
             var evt = new FundsAddedEvent(Name, funds.Currency.Name, funds.Amount);
             Apply(evt);
-            Store.Current.Save(evt);
+            Store.Current.Publish(evt);
         }
 
         public void Apply(FundsAddedEvent evt)
